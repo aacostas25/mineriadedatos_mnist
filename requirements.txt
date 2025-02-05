@@ -1,6 +1,7 @@
 streamlit
-seaborn
-matplotlib
 pandas
-kagglehub
+numpy
 scikit-learn
+seaborn
+plotly
+tensorflow
