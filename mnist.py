@@ -63,8 +63,8 @@ def main():
     st.image('MNISTpicture.png', caption="MNIST")
     st.title("Clasificador de imágenes MNIST")
     st.write("""
-    Se clasificó el conjunto de datos MNIST utilizando un modelo basado en Kernel Ridge Regression (KRR) 
-    con un núcleo RBF y una penalización alpha=0.1, incorporado en un Pipeline que incluye StandardScaler para la normalización de las imágenes. 
+    Se clasificó el conjunto de datos MNIST utilizando un modelo basado en **Kernel Ridge Regression (KRR)** 
+    con un núcleo RBF y una penalización `alpha`=0.1, incorporado en un Pipeline que incluye StandardScaler para la normalización de las imágenes. 
     """)
     st.write("""
     ### Evaluación de Modelos y Técnicas de Preprocesamiento
