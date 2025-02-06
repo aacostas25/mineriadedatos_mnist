@@ -45,7 +45,36 @@ def classify_image(image):
     return predicted_class
 
 def main():
-    st.title("Clasificador de imágenes MNIST")
+    # Título de la aplicación
+    st.title("Clasificador de Imágenes MNIST")
+    
+    # Descripción inicial
+    st.write("""
+    ### Conoce un poco sobre la base de datos.
+    La base de datos MNIST (Modified National Institute of Standards and Technology) es ampliamente utilizada para entrenar modelos de procesamiento de imágenes. 
+    Contiene imágenes de dígitos escritos a mano, clasificadas en 10 categorías. Además, permite experimentar con diferentes técnicas de preprocesamiento y clasificación.
+    """)
+    
+    st.image('MNISTpicture.png', caption="Base de datos MNIST")
+    
+    st.write("""
+    ### Clasificación de Imágenes MNIST
+    Se utilizó un modelo basado en **Kernel Ridge Regression (KRR)** con un núcleo RBF y penalización `alpha=0.1`, acompañado de un **StandardScaler** para la normalización de las imágenes.
+    """)
+
+    st.write("""
+    ### Evaluación de Modelos y Técnicas de Preprocesamiento
+    Se probaron diversas configuraciones de modelos y técnicas de preprocesamiento:
+    
+    - **ElasticNet**: Se evaluaron diferentes valores de `alpha` ([0.1, 0.2, 0.5, 1.0, 10.0, 100.0]) y `l1_ratio` ([0.1, 0.2, 0.5, 1.0]).
+    - **Kernel Ridge Regression (KRR)**: Se probaron valores de `alpha` y tipos de núcleos: **linear**, **poly**, **rbf**, **sigmoid**.
+    - Métodos de escalado: **StandardScaler**, **MinMaxScaler**, y **Sin escalado** (None).
+    """)
+
+    st.write("""
+    ### Opciones para Probar el Modelo
+    Puedes seleccionar una imagen predeterminada o subir tu propia imagen en formato **PNG, JPG o JPEG** para probar el modelo. El modelo clasificará la imagen cargada y mostrará los resultados en tiempo real.
+    """)
 
     # Opción de subir una imagen
     uploaded_file = st.file_uploader("Sube una imagen (PNG, JPG, JPEG):", type=["png", "jpg", "jpeg"])
@@ -55,7 +84,7 @@ def main():
     if not uploaded_file:
         image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.endswith(('png', 'jpg', 'jpeg'))]
         if image_files:
-            st.subheader("Selecciona una imagen de la carpeta:")
+            st.write("Selecciona una imagen de la carpeta:")
             selected_image = st.selectbox("Elige una imagen:", image_files)
 
     # Mostrar y procesar solo una imagen
@@ -66,10 +95,10 @@ def main():
         st.subheader("Imágenes antes y después del preprocesamiento")
         col1, col2 = st.columns(2)
         with col1:
-            st.image(image, caption="Imagen original", use_container_width=True, output_format="auto")
+            st.image(image, caption="Imagen original", use_container_width=True)
         with col2:
             preprocessed_imag = preprocess_image(image)
-            st.image(preprocessed_imag.reshape(28, 28), caption="Imagen preprocesada", use_container_width=True, output_format="auto")
+            st.image(preprocessed_imag.reshape(28, 28), caption="Imagen preprocesada", use_container_width=True)
             
     elif selected_image:
         image_path = os.path.join(IMAGE_FOLDER, selected_image)
@@ -77,16 +106,19 @@ def main():
         st.subheader("Imágenes antes y después del preprocesamiento")
         col1, col2 = st.columns(2)
         with col1:
-            st.image(image, caption="Imagen original", use_container_width=True, output_format="auto")
+            st.image(image, caption="Imagen original", use_container_width=True)
         with col2:
             preprocessed_imag = preprocess_image(image)
-            st.image(preprocessed_imag.reshape(28, 28), caption="Imagen preprocesada", use_container_width=True, output_format="auto")
+            st.image(preprocessed_imag.reshape(28, 28), caption="Imagen preprocesada", use_container_width=True)
             
     # Botón para clasificar la imagen mostrada
     if image and st.button("Clasificar imagen"):
         with st.spinner("Clasificando..."):
             predicted_class = classify_image(image)
             st.success(f"La imagen fue clasificada como: {predicted_class[0]}")
+
+    st.markdown('<style>div.footer {text-align: center; padding: 10px; background-color: #f1f1f1; font-size: 14px;}</style>', unsafe_allow_html=True)
+    st.markdown('<div class="footer">© Minería de Datos - Clasificación de Imágenes MNIST</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
