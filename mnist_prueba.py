@@ -41,8 +41,7 @@ def classify_image(image):
     """Clasifica la imagen con el modelo."""
     preprocessed_image = preprocess_image(image)
     model = load_model()
-    prediction = model.predict(preprocessed_image)
-    predicted_class = np.argmax(prediction)
+    predicted_class = model.predict(preprocessed_image)
     return predicted_class
 
 def main():
@@ -76,7 +75,7 @@ def main():
     if image and st.button("Clasificar imagen"):
         with st.spinner("Clasificando..."):
             predicted_class = classify_image(image)
-            st.success(f"La imagen fue clasificada como: {predicted_class}")
+            st.success(f"La imagen fue clasificada como: {predicted_class[0]}")
 
 if __name__ == "__main__":
     main()
