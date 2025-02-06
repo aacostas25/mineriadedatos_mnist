@@ -41,7 +41,8 @@ def classify_image(image):
     """Clasifica la imagen con el modelo."""
     preprocessed_image = preprocess_image(image)
     model = load_model()
-    predicted_class = model.predict(preprocessed_image)
+    prediction = model.predict(preprocessed_image)
+    predicted_class = np.argmax(prediction)
     return predicted_class
 
 def main():
@@ -50,36 +51,32 @@ def main():
     # Opción de subir una imagen
     uploaded_file = st.file_uploader("Sube una imagen (PNG, JPG, JPEG):", type=["png", "jpg", "jpeg"])
 
-    # Opción de seleccionar una imagen de la carpeta
-    image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.endswith(('png', 'jpg', 'jpeg'))]
+    # Opción de seleccionar una imagen de la carpeta (solo si no se subió una imagen)
     selected_image = None
-    if image_files:
-        st.subheader("Selecciona una imagen de la carpeta:")
-        selected_image = st.selectbox("Elige una imagen:", image_files)
+    if not uploaded_file:
+        image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.endswith(('png', 'jpg', 'jpeg'))]
+        if image_files:
+            st.subheader("Selecciona una imagen de la carpeta:")
+            selected_image = st.selectbox("Elige una imagen:", image_files)
 
-    # Procesar imagen seleccionada de la carpeta
-    if selected_image:
-        image_path = os.path.join(IMAGE_FOLDER, selected_image)
-        image = Image.open(image_path)
-        st.image(image, caption=f"Imagen seleccionada: {selected_image}", use_container_width=True)
-
-        if st.button("Clasificar imagen seleccionada"):
-            with st.spinner("Clasificando..."):
-                predicted_class = classify_image(image)
-                st.success(f"La imagen fue clasificada como: {predicted_class}")
-
-    # Procesar imagen subida por el usuario
+    # Mostrar y procesar solo una imagen
+    image = None
     if uploaded_file:
         image = Image.open(uploaded_file)
         file_path = save_image(uploaded_file)
+        st.subheader("Imagen subida")
+        st.image(image, caption="Imagen original", use_column_width=True)
+    elif selected_image:
+        image_path = os.path.join(IMAGE_FOLDER, selected_image)
+        image = Image.open(image_path)
+        st.subheader("Imagen seleccionada de la carpeta")
+        st.image(image, caption=f"Imagen: {selected_image}", use_column_width=True)
 
-        st.subheader("Vista previa de la imagen subida")
-        st.image(image, caption="Imagen original", use_container_width=True)
-
-        if st.button("Clasificar imagen subida"):
-            with st.spinner("Clasificando..."):
-                predicted_class = classify_image(image)
-                st.success(f"La imagen fue clasificada como: {predicted_class}")
+    # Botón para clasificar la imagen mostrada
+    if image and st.button("Clasificar imagen"):
+        with st.spinner("Clasificando..."):
+            predicted_class = classify_image(image)
+            st.success(f"La imagen fue clasificada como: {predicted_class}")
 
 if __name__ == "__main__":
     main()
