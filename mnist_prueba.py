@@ -41,8 +41,7 @@ def classify_image(image):
     """Clasifica la imagen con el modelo."""
     preprocessed_image = preprocess_image(image)
     model = load_model()
-    prediction = model.predict(preprocessed_image)
-    predicted_class = np.argmax(prediction)
+    predicted_class = model.predict(preprocessed_image)
     return predicted_class
 
 def main():
