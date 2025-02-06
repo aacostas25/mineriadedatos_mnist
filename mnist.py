@@ -7,9 +7,13 @@ from tensorflow.keras.preprocessing.image import img_to_array
 import gzip
 import pickle
 
-# Crear un directorio para guardar las imágenes si no existe
+# Definir carpetas
 UPLOAD_FOLDER = "uploaded_images"
+IMAGE_FOLDER = "images"
+
+# Crear carpetas si no existen
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(IMAGE_FOLDER, exist_ok=True)
 
 def save_image(uploaded_file):
     """Guarda la imagen subida en el directorio UPLOAD_FOLDER."""
@@ -19,7 +23,7 @@ def save_image(uploaded_file):
     return file_path
 
 def load_model():
-    """Cargar el modelo y sus pesos desde el archivo model_weights.pkl."""
+    """Cargar el modelo desde un archivo comprimido."""
     filename = 'model_trained_classifier.pkl.gz'
     with gzip.open(filename, 'rb') as f:
         model = pickle.load(f)
@@ -27,22 +31,47 @@ def load_model():
 
 def preprocess_image(image):
     """Preprocesa la imagen para que sea compatible con el modelo."""
-    image = image.convert('L')  # Convertir a escala de grises
+    image = image.convert('L')  # Escala de grises
     image = image.resize((28, 28))  # Redimensionar a 28x28
-    image_array = img_to_array(image) / 255.0  # Normalizar los píxeles
-    image_array = image_array.reshape(1, -1)  # Convertir a vector de 784 características
+    image_array = img_to_array(image) / 255.0  # Normalizar
+    image_array = image_array.reshape(1, -1)  # Vector de características
     return image_array
+
+def classify_image(image):
+    """Clasifica la imagen con el modelo."""
+    preprocessed_image = preprocess_image(image)
+    model = load_model()
+    predicted_class = model.predict(preprocessed_image)
+    return predicted_class
+
 def main():
-  # Widget de subida de archivos
-    uploaded_file = st.file_uploader("Selecciona una imagen (PNG, JPG, JPEG):", type=["png", "jpg", "jpeg"])
+    st.title("Clasificador de imágenes MNIST")
 
-    if uploaded_file is not None:
-        # Mostrar la imagen subida
-        st.subheader("Vista previa de la imagen subida")
+    # Opción de subir una imagen
+    uploaded_file = st.file_uploader("Sube una imagen (PNG, JPG, JPEG):", type=["png", "jpg", "jpeg"])
+
+    # Opción de seleccionar una imagen de la carpeta
+    image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.endswith(('png', 'jpg', 'jpeg'))]
+    selected_image = None
+    if image_files:
+        st.subheader("Selecciona una imagen de la carpeta:")
+        selected_image = st.selectbox("Elige una imagen:", image_files)
+
+    # Procesar imagen seleccionada de la carpeta
+    if selected_image:
+        image_path = os.path.join(IMAGE_FOLDER, selected_image)
+        image = Image.open(image_path)
+        st.image(image, caption=f"Imagen seleccionada: {selected_image}", use_container_width=True)
+
+        if st.button("Clasificar imagen seleccionada"):
+            with st.spinner("Clasificando..."):
+                predicted_class = classify_image(image)
+                st.success(f"La imagen fue clasificada como: {predicted_class}")
+
+    # Procesar imagen subida por el usuario
+    if uploaded_file:
         image = Image.open(uploaded_file)
-
-        # Procesar la imagen
-        preprocessed_image = preprocess_image(image)
+        file_path = save_image(uploaded_file)
 
         # Mostrar imágenes antes y después del preprocesamiento
         st.subheader("Imágenes antes y después del preprocesamiento")
@@ -50,24 +79,13 @@ def main():
         with col1:
             st.image(image, caption="Imagen original", use_container_width=True, output_format="auto")
         with col2:
-            st.image(preprocessed_image.reshape(28, 28), caption="Imagen preprocesada", use_container_width=True, output_format="auto")
+            preprocessed_imag = preprocess_image(image)
+            st.image(preprocessed_imag.reshape(28, 28), caption="Imagen preprocesada", use_container_width=True, output_format="auto")
 
-        # Guardar la imagen
-        file_path = save_image(uploaded_file)
-        st.success(f"Imagen guardada")
-
-        # Diccionario de clases para MNIST
-        mnist_classes = {i: str(i) for i in range(10)}
-
-        # Botón para clasificar la imagen
-        if st.button("Clasificar imagen"):
-            with st.spinner("Cargando modelo y clasificando..."):
-                model = load_model()
-                prediction = model.predict(preprocessed_image)
-                
-                # Verificar valores de predicción
-                st.success(f"La imagen fue clasificada como: {prediction}")
-
+        if st.button("Clasificar imagen subida"):
+            with st.spinner("Clasificando..."):
+                predicted_class = classify_image(image)
+                st.success(f"La imagen fue clasificada como: {predicted_class}")
 
 if __name__ == "__main__":
     main()
