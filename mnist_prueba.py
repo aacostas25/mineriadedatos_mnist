@@ -61,7 +61,7 @@ def main():
     if selected_image:
         image_path = os.path.join(IMAGE_FOLDER, selected_image)
         image = Image.open(image_path)
-        st.image(image, caption=f"Imagen seleccionada: {selected_image}", use_column_width=True)
+        st.image(image, caption=f"Imagen seleccionada: {selected_image}", use_container_width=True)
 
         if st.button("Clasificar imagen seleccionada"):
             with st.spinner("Clasificando..."):
@@ -74,7 +74,7 @@ def main():
         file_path = save_image(uploaded_file)
 
         st.subheader("Vista previa de la imagen subida")
-        st.image(image, caption="Imagen original", use_column_width=True)
+        st.image(image, caption="Imagen original", use_container_width=True)
 
         if st.button("Clasificar imagen subida"):
             with st.spinner("Clasificando..."):
