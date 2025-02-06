@@ -68,9 +68,14 @@ def main():
     elif selected_image:
         image_path = os.path.join(IMAGE_FOLDER, selected_image)
         image = Image.open(image_path)
-        st.subheader("Imagen seleccionada de la carpeta")
-        st.image(image, caption=f"Imagen: {selected_image}", use_column_width=True)
-
+        st.subheader("Imágenes antes y después del preprocesamiento")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image(image, caption="Imagen original", use_container_width=True, output_format="auto")
+        with col2:
+            preprocessed_imag = preprocess_image(image)
+            st.image(preprocessed_imag.reshape(28, 28), caption="Imagen preprocesada", use_container_width=True, output_format="auto")
+            
     # Botón para clasificar la imagen mostrada
     if image and st.button("Clasificar imagen"):
         with st.spinner("Clasificando..."):
