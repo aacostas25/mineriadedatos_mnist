@@ -45,6 +45,19 @@ def classify_image(image):
     return predicted_class
 
 def main():
+    # Título de la aplicación
+    st.title("MNIST")
+    st.image('MNISTpicture.png', caption="MNIST")
+    # Descripción inicial
+    
+    st.write("""
+    ### Conoce un poco sobre la base de datos.
+    La base de datos MNIST (por sus siglas en inglés, Modified National Institute of Standards and Technology database)1​ es 
+    una extensa colección de base de datos que se utiliza ampliamente para el entrenamiento de diversos sistemas de procesamiento de imágenes.
+    Y además, transformar los datos mediante la imputación de datos faltantes, la codificación de variables categoricas y la estandarización de los datos.
+
+    
+    """)
     st.title("Clasificador de imágenes MNIST")
 
     # Opción de subir una imagen
