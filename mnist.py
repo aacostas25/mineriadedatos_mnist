@@ -47,7 +47,6 @@ def classify_image(image):
 def main():
     # Título de la aplicación
     st.title("MNIST")
-    st.image('MNISTpicture.png', caption="MNIST")
     # Descripción inicial
     
     st.write("""
@@ -55,9 +54,13 @@ def main():
     La base de datos MNIST (por sus siglas en inglés, Modified National Institute of Standards and Technology database)1​ es 
     una extensa colección de base de datos que se utiliza ampliamente para el entrenamiento de diversos sistemas de procesamiento de imágenes.
     Y además, transformar los datos mediante la imputación de datos faltantes, la codificación de variables categoricas y la estandarización de los datos.
-
+    
+    El conjunto de imágenes de la base de datos MNIST fue creado en 1994 mediante la combinación de dos bases de datos del NIST: la Base de Datos Especial 1 y la Base de Datos Especial 3. La Base de Datos Especial 1 contiene dígitos escritos por estudiantes de secundaria, 
+    mientras que la Base de Datos Especial 3 consiste en dígitos escritos por empleados de la Oficina del Censo de Estados Unidos.
+    
     
     """)
+    st.image('MNISTpicture.png', caption="MNIST")
     st.title("Clasificador de imágenes MNIST")
 
     # Opción de subir una imagen
