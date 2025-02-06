@@ -64,7 +64,7 @@ def main():
     st.title("Clasificador de imágenes MNIST")
     st.write("""
     Se clasificó el conjunto de datos MNIST utilizando un modelo basado en **Kernel Ridge Regression (KRR)** 
-    con un núcleo RBF y una penalización `alpha`=0.1, incorporado en un Pipeline que incluye StandardScaler para la normalización de las imágenes. 
+    con un núcleo RBF y una penalización de `alpha` de 0.1, incorporado en un Pipeline que incluye StandardScaler para la normalización de las imágenes. 
     """)
     st.write("""
     ### Evaluación de Modelos y Técnicas de Preprocesamiento
@@ -82,6 +82,11 @@ def main():
     
     Estas combinaciones fueron probadas para determinar cuál proporciona el mejor rendimiento en la clasificación de los dígitos MNIST.
     """)
+    st.write("""
+### Opciones para Probar el Modelo
+
+Puedes elegir entre seleccionar una imagen predeterminada de nuestra carpeta de imágenes o subir tu propia imagen para probar el modelo. Si decides subir una imagen, asegúrate de que esté en formato **PNG, JPG o JPEG**. El modelo clasificará la imagen cargada según los dígitos de **MNIST**. Ambas opciones te permiten experimentar con el clasificador y ver los resultados en tiempo real.
+""")
 
     # Opción de subir una imagen
     uploaded_file = st.file_uploader("Sube una imagen (PNG, JPG, JPEG):", type=["png", "jpg", "jpeg"])
@@ -91,7 +96,7 @@ def main():
     if not uploaded_file:
         image_files = [f for f in os.listdir(IMAGE_FOLDER) if f.endswith(('png', 'jpg', 'jpeg'))]
         if image_files:
-            st.subheader("Selecciona una imagen de la carpeta:")
+            st.write("Selecciona una imagen de la carpeta:")
             selected_image = st.selectbox("Elige una imagen:", image_files)
 
     # Mostrar y procesar solo una imagen
