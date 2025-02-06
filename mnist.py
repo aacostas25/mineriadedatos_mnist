@@ -62,7 +62,10 @@ def main():
     """)
     st.image('MNISTpicture.png', caption="MNIST")
     st.title("Clasificador de imágenes MNIST")
-
+    st.write("""
+    Se clasificó el conjunto de datos MNIST utilizando un modelo basado en Kernel Ridge Regression (KRR) 
+    con un núcleo RBF y una penalización alpha=0.1, incorporado en un Pipeline que incluye StandardScaler para la normalización de las imágenes. 
+    """)
     # Opción de subir una imagen
     uploaded_file = st.file_uploader("Sube una imagen (PNG, JPG, JPEG):", type=["png", "jpg", "jpeg"])
 
@@ -103,6 +106,8 @@ def main():
         with st.spinner("Clasificando..."):
             predicted_class = classify_image(image)
             st.success(f"La imagen fue clasificada como: {predicted_class[0]}")
+            
+    st.markdown('<div class="footer">© Mineria de datos - Clasificación de imágenes MNIST</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
