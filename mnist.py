@@ -69,6 +69,10 @@ def main():
     - **n_neighbors = 4**: Se consideran los cuatro vecinos más cercanos para realizar la clasificación.
     - **p = 3**: La distancia entre imágenes se calcula utilizando la métrica de la norma de orden 3 (distancia de Minkowski con p=3).  
     """)
+    st.write("""
+    Se clasificó el conjunto de datos MNIST utilizando un modelo basado en **Kernel Ridge Regression (KRR)** 
+    con un núcleo RBF y una penalización de `alpha` de 0.1, incorporado en un Pipeline que incluye StandardScaler para la normalización de las imágenes. 
+    """)
     
     st.write("""
 ### Opciones para Probar el Modelo
