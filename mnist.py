@@ -63,25 +63,13 @@ def main():
     st.image('MNISTpicture.png', caption="MNIST")
     st.title("Clasificador de imágenes MNIST")
     st.write("""
-    Se clasificó el conjunto de datos MNIST utilizando un modelo basado en **Kernel Ridge Regression (KRR)** 
-    con un núcleo RBF y una penalización de `alpha` de 0.1, incorporado en un Pipeline que incluye StandardScaler para la normalización de las imágenes. 
+    El modelo final empleado para la clasificación de imágenes en el conjunto de datos **MNIST** se basa en el algoritmo de **k-vecinos más cercanos (k-NN)**. Este método de aprendizaje supervisado clasifica cada imagen en función de la proximidad a las imágenes de entrenamiento más similares.
+
+    En este caso, el modelo ha sido optimizado con los siguientes hiperparámetros:
+    - **n_neighbors = 4**: Se consideran los cuatro vecinos más cercanos para realizar la clasificación.
+    - **p = 3**: La distancia entre imágenes se calcula utilizando la métrica de la norma de orden 3 (distancia de Minkowski con p=3).  
     """)
-    st.write("""
-    ### Evaluación de Modelos y Técnicas de Preprocesamiento
     
-    Para la clasificación de MNIST, se probaron varias configuraciones de modelos y técnicas de preprocesamiento:
-    
-    - **ElasticNet**: Se evaluaron diferentes valores de `alpha` ([0.1, 0.2, 0.5, 1.0, 10.0, 100.0]) y `l1_ratio` ([0.1, 0.2, 0.5, 1.0]).
-      
-    - **Kernel Ridge Regression (KRR)**: Se probaron diferentes valores de `alpha` y se evaluaron varios tipos de núcleos: **linear**, **poly**, **rbf**, y **sigmoid**.
-    
-    Además, se compararon diferentes métodos de escalado:
-    - **StandardScaler**
-    - **MinMaxScaler**
-    - **Sin escalado** (None)
-    
-    Estas combinaciones fueron probadas para determinar cuál proporciona el mejor rendimiento en la clasificación de los dígitos MNIST.
-    """)
     st.write("""
 ### Opciones para Probar el Modelo
 
